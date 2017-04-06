@@ -206,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
                 startActivity(intent);
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -225,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
 //        this.startActivity(intent, ActivityOptions.makeScaleUpAnimation(view, 0,0,0,0).toBundle());
         this.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,
                 gridView.getChildAt(gridviewPos).findViewById(R.id.img_gridview), "sharedView").toBundle());
-
     }
 
     @Override
@@ -233,6 +231,5 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
 
         this.position = position;
         Log.i("TAG", "pageChanged " + position);
-
     }
 }
