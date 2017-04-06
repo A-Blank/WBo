@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
 
         getDatas();
         volleyControl = VolleyControl.getInstance();
-
         listView = (ListView) findViewById(R.id.listview);
         View view = LayoutInflater.from(this).inflate(R.layout.loading, null);
         listView.addFooterView(view);
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
                         HttpUtil.sendJsonObjectRequest(RequestUrl.getHot_Topic_URL(), new HttpCallback() {
                             @Override
                             public void onFinish(JSONObject jsonObject) {
-                                if(jsonObject==null){
+                                if (jsonObject == null) {
 //                                    view.removeAllViews();
                                     return;
                                 }
