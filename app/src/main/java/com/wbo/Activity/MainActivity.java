@@ -72,12 +72,10 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
 
     public void Init() {
 
-
         setExitSharedElementCallback(new android.app.SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 super.onMapSharedElements(names, sharedElements);
-//                Log.i("TAG", "Init " + position);
                 sharedElements.put("sharedView", gridView.getChildAt(position).findViewById(R.id.img_gridview));
             }
         });
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
 
             }
         });
-
 
         drawerLayout = (DrawerLayout) findViewById(R.id.activity_main);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -232,4 +229,5 @@ public class MainActivity extends AppCompatActivity implements onClickListenerCa
         this.position = position;
         Log.i("TAG", "pageChanged " + position);
     }
+
 }
