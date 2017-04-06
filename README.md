@@ -3,10 +3,10 @@
 ## 通过抓取微博的一些api做的一个Demo
 
 
-![1](https://github.com/A-Blank/WBo/blob/master/ScreenShot/1.PNG)
-![2](https://github.com/A-Blank/WBo/blob/master/ScreenShot/2.PNG)
-![3](https://github.com/A-Blank/WBo/blob/master/ScreenShot/3.PNG)
-![4](https://github.com/A-Blank/WBo/blob/master/ScreenShot/4.PNG)
+![1](https://github.com/A-Blank/WBo/blob/master/screenshot/1.PNG)
+![2](https://github.com/A-Blank/WBo/blob/master/screenshot/2.PNG)
+![3](https://github.com/A-Blank/WBo/blob/master/screenshot/3.PNG)
+![4](https://github.com/A-Blank/WBo/blob/master/screenshot/4.PNG)
 
 <br />
 
