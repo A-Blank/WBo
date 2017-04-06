@@ -79,9 +79,6 @@ public class Utility {
                     if (!jsonArray.getJSONObject(i).has("show_type")) {
                         continue;
                     }
-//                    if (jsonArray.getJSONObject(i).getString("show_type").equals("0")) {
-//                        continue;
-//                    }
                     if (!jsonArray.getJSONObject(i).has("card_group")) {
                         continue;
                     }

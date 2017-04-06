@@ -25,6 +25,11 @@ import java.util.regex.Pattern;
 
 public class TextUtil {
 
+    /**
+     * 获取文本中的Url
+     * @param content
+     * @return
+     */
     public static SpannableString UrlHandle(String content) {
         final List<String> termList = new ArrayList<String>();
         String patternString = "[http|https]+[://]+[0-9A-Za-z:/[-]_#[?][=][.][&][%]]*";
@@ -70,7 +75,7 @@ public class TextUtil {
 //                    TrendingActivity.trendingActivity.startActivity(intent);
                 }
             }, start, start + 2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(Color.rgb(0, 0, 200)), start, start + 2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#0969d0")), start, start + 2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
 //        spannableString.set;
@@ -121,7 +126,7 @@ public class TextUtil {
                     Log.i("TAG", "onClick: spanURl");
                 }
             }, start, start+str.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-//            content.setSpan(new ForegroundColorSpan(Color.rgb(0, 0, 200)), 0, 0, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            content.setSpan(new ForegroundColorSpan(Color.rgb(0, 0, 200)), 0, 0, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         }
 
         return content;
