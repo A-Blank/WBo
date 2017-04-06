@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/img_pic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="#e8e7e7"
+        android:scaleType="center"
+        android:layout_centerVertical="true"
+        android:padding="5dp"/>
+
+    <TextView
+        android:id="@+id/textview_desc"
+        android:layout_width="wrap_content"
+        android:textColor="#171616"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/img_pic"
+        android:text="DESC"/>
+
+    <TextView
+        android:id="@+id/textview_desc_extra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/textview_desc"
+        android:text="DESC_EXTR"
+        android:textSize="15sp"/>
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/img_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"/>
+
+</RelativeLayout>
