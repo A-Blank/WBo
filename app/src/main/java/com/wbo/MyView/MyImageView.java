@@ -143,7 +143,7 @@ public class MyImageView extends ImageView {
                     float inSampleSize_2 = (float) (1.0 * height / width);
                     float inSampleSize_3 = height / viewHeight < width / viewWidth ? height / viewHeight : width / viewWidth;
                     options.inSampleSize = (int) inSampleSize_3;
-
+                    Log.i("TAG", "inSampleSize=" + height / viewHeight+" "+ width / viewWidth);
                     options.inJustDecodeBounds=false;
                     conn = (HttpURLConnection) url.openConnection();
                     in = conn.getInputStream();
@@ -155,11 +155,11 @@ public class MyImageView extends ImageView {
                     rect.left = rect.top = 0;
                     rect.right = width;
                     if (inSampleSize_1 < inSampleSize_2) {
-                        Log.i("TAG", "SlideEnable=true" );
+//                        Log.i("TAG", "SlideEnable=true" );
                         flag = true;
                         rect.bottom = (int) (width * inSampleSize_1);
                     } else {
-                        Log.i("TAG", "SlideEnable=false" );
+//                        Log.i("TAG", "SlideEnable=false" );
                         flag=false;
                         rect.bottom = height;
                     }
@@ -204,8 +204,8 @@ public class MyImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i("TAG", "onDraw" + " " + isHardwareAccelerated());
-        Log.i("TAG", "SlideEnable="+this.hashCode() );
+//        Log.i("TAG", "onDraw" + " " + isHardwareAccelerated());
+//        Log.i("TAG", "SlideEnable="+this.hashCode() );
         SlideLayoutView.setSlideEnable(!flag);
 //        Paint paint = new Paint();
 //        paint.setAntiAlias(true);
@@ -303,6 +303,7 @@ public class MyImageView extends ImageView {
     public void setBitmap() {
         if (mMovie == null) {
             if (bitmapRegionDecoder != null) {
+                Log.i("TAG", "option size=" + options.inSampleSize);
                 bitmap = bitmapRegionDecoder.decodeRegion(rect, options);
                 this.setImageBitmap(bitmap);
             }

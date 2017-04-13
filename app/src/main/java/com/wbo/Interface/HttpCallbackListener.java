@@ -17,6 +17,7 @@ public interface HttpCallbackListener {
     void onFinish(String Response);
     void onFinish(List<TrendingData> trendingDataList);
     void onFinish(JSONObject jsonObject);
+    void onFinish(Bitmap bitmap);
     void onError(Exception e);
 
 

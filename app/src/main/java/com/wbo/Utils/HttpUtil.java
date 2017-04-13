@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.wbo.Interface.HttpCallbackListener;
 import com.wbo.Interface.impl.HttpCallback;
@@ -24,6 +25,7 @@ import java.net.URL;
  */
 
 public class HttpUtil {
+
 
 //    public static void sendStringRequest(final String address,final HttpCallback listener){
 //
@@ -79,6 +81,26 @@ public class HttpUtil {
 
         VolleyControl volleyControl=VolleyControl.getInstance();
         volleyControl.addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public static void sendImageRequest(final String address,final int position,final HttpCallback listener){
+
+        ImageRequest imageRequest= new ImageRequest(address, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap bitmap) {
+                Log.i("TAG", "onResponse: ");
+                listener.onFinish(bitmap);
+            }
+        }, 300, 300, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
+        VolleyControl volleyControl=VolleyControl.getInstance();
+        volleyControl.addToRequestQueue(imageRequest);
 
     }
 

@@ -1,6 +1,7 @@
 package com.wbo.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -8,17 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.wbo.Bean.TopicData;
+import com.wbo.Interface.impl.HttpCallback;
 import com.wbo.Interface.onClickListenerCallBack;
 import com.wbo.MyView.MyGridView;
 import com.wbo.MyView.RoundImageView;
 import com.wbo.R;
 import com.wbo.Utils.BitmapCache;
+import com.wbo.Utils.ExecutorsControl;
+import com.wbo.Utils.HttpUtil;
 import com.wbo.Utils.TextUtil;
 import com.wbo.Utils.VolleyControl;
 
@@ -28,6 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by 丶 on 2017/3/20.
@@ -43,16 +51,28 @@ public class TopicListAdapter extends BaseAdapter {
     private VolleyControl volleyControl;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
+    private Bitmap bitmap;
+
+    private BitmapCache cache;
+
+    private SimpleAdapter simpleAdapter;
+
+    /**
+     * 线程池操作
+     */
+    private ExecutorsControl executorsControl;
+    private ExecutorService executorService;
+
+    private GridView gridView;
 
     private onClickListenerCallBack callBack;
 
     private static boolean IsListViewIDLE = true;
 
-    private SimpleAdapter simpleAdapter;
     private List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-    private int[] imageId=new int[]{R.drawable.defult_pictrue,R.drawable.defult_pictrue,R.drawable.defult_pictrue,
-            R.drawable.defult_pictrue,R.drawable.defult_pictrue,R.drawable.defult_pictrue,
-            R.drawable.defult_pictrue,R.drawable.defult_pictrue,R.drawable.defult_pictrue};
+    private int[] imageId = new int[]{R.drawable.defult_pictrue, R.drawable.defult_pictrue, R.drawable.defult_pictrue,
+            R.drawable.defult_pictrue, R.drawable.defult_pictrue, R.drawable.defult_pictrue,
+            R.drawable.defult_pictrue, R.drawable.defult_pictrue, R.drawable.defult_pictrue};
 
 
     public TopicListAdapter(Context context, List<TopicData> datas, onClickListenerCallBack callBack) {
@@ -63,6 +83,8 @@ public class TopicListAdapter extends BaseAdapter {
         volleyControl = VolleyControl.getInstance();
         requestQueue = volleyControl.getRequestQueue();
         imageLoader = new ImageLoader(requestQueue, BitmapCache.getInstace());
+        executorsControl = ExecutorsControl.getInstance();
+        cache = BitmapCache.getInstace();
     }
 
 
@@ -98,7 +120,7 @@ public class TopicListAdapter extends BaseAdapter {
             viewHolder.device = (TextView) convertView.findViewById(R.id.textview_device);
             viewHolder.text = (TextView) convertView.findViewById(R.id.textview_text);
             viewHolder.gridView = (MyGridView) convertView.findViewById(R.id.gridview);
-            viewHolder.adapter = new TopicPictureListAdapter(mContext);
+            viewHolder.adapter = new TopicPictureListAdapter(mContext,position);
             viewHolder.gridView.setAdapter(viewHolder.adapter);
             convertView.setTag(viewHolder);
         } else {
@@ -134,28 +156,57 @@ public class TopicListAdapter extends BaseAdapter {
          * 造成ListView复用Item导致列表图片问题
          */
         mapList.clear();
+        viewHolder.gridView.setTag(position);
         for (int i = 0; i < mDatasList.get(position).getPic_url().size(); i++) {
-            Map<String,Object> map=new HashMap<String,Object>();
-            map.put("img",imageId[i]);
+            Map<String, Object> map = new HashMap<String, Object>();
+//            getBitmap(mDatasList.get(position).getPic_url().get(i),bitmap,position);
+            map.put("img", imageId);
             mapList.add(map);
         }
-        viewHolder.gridView.setAdapter(new SimpleAdapter(mContext, mapList,R.layout.item_gridview,new String[]{"img"},new int[]{R.id.img_gridview}));
+        simpleAdapter = new SimpleAdapter(mContext, mapList, R.layout.item_gridview, new String[]{"img"}, new int[]{R.id.img_gridview});
+//        simpleAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+//            @Override
+//            public boolean setViewValue(View view, Object data, String textRepresentation) {
+//                if (view instanceof ImageView && data instanceof Bitmap) {
+//                    ImageView iv = (ImageView) view;
+//                    iv.setImageBitmap((Bitmap) data);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+        viewHolder.gridView.setAdapter(simpleAdapter);
 
         //若ListVIew停止滑动，则更新数据加载图片
-        if(IsListViewIDLE) {
-            viewHolder.adapter.setDatas(mDatasList.get(position).getPic_url());
-            viewHolder.gridView.setAdapter(viewHolder.adapter);
-            viewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int gridviewPos, long id) {
-                    callBack.GridViewItemClick(parent, position, gridviewPos);
-                }
-            });
-        }
+        viewHolder.adapter.setGridView(viewHolder.gridView);
+        viewHolder.adapter.setDatas(mDatasList.get(position).getPic_url());
+        viewHolder.gridView.setAdapter(viewHolder.adapter);
+        viewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int gridviewPos, long id) {
+                callBack.GridViewItemClick(parent, position, gridviewPos);
+            }
+
+        });
 //        Log.i("TAG", "TopListAdapter");
         return convertView;
     }
 
+//    public Bitmap getBitmap(final String url, Bitmap bitmap, int position) {
+//
+//        if (cache.getBitmap(url) != null) {
+//            return cache.getBitmap(url);
+//        }
+////        final Bitmap[] bm = new Bitmap[1];
+//        HttpUtil.sendImageRequest(url, new HttpCallback() {
+//            @Override
+//            public void onFinish(Bitmap b) {
+//
+//            }
+//        });
+//
+//        return bitmap[0];
+//    }
 
     class ViewHolder {
         private RoundImageView user_pic;

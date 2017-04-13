@@ -30,6 +30,11 @@ public class HttpCallback implements HttpCallbackListener{
     }
 
     @Override
+    public void onFinish(Bitmap bitmap) {
+
+    }
+
+    @Override
     public void onError(Exception e) {
 
     }
